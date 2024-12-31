@@ -13,17 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-          
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-        
-      - name: Run API tests
-        run: |
-          postman collection run "${{ secrets.POSTMAN_COLLECTION_ID }}" --integration-id "172557-${{ github.run_id }}"
-      
-      - name: Additional checks
-        run: |
-          echo "API tests completed"
+      - name: Run API Tests
+        uses: postman/newman-action@v5
+        with:
+          collection: ${{ secrets.POSTMAN_COLLECTION_ID }}
+          apiKey: ${{ secrets.POSTMAN_API_KEY }}
