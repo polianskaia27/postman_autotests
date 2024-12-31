@@ -13,8 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Install Newman
+        run: npm install -g newman
+      
       - name: Run API Tests
-        uses: postman/newman-action@v5
-        with:
-          collection: ${{ secrets.POSTMAN_COLLECTION_ID }}
-          apiKey: ${{ secrets.POSTMAN_API_KEY }}
+        run: newman run "${{ secrets.POSTMAN_COLLECTION_ID }}"
+        env:
+          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
